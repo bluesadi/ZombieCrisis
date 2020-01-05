@@ -1,4 +1,4 @@
-package cn.bluesadi.zombiecrisis.world;
+package cn.bluesadi.zombiecrisis.game;
 
 import org.bukkit.Location;
 
@@ -21,12 +21,8 @@ public class Region {
         double x = loc.getX();
         double y = loc.getY();
         double z = loc.getZ();
-        double minX = Math.min(pos1.getX(),pos2.getX());
-        double minY = Math.min(pos1.getY(),pos2.getY());
-        double minZ = Math.min(pos1.getZ(),pos2.getZ());
-        double maxX = Math.max(pos1.getX(),pos2.getX());
-        double maxY = Math.max(pos1.getY(),pos2.getY());
-        double maxZ = Math.max(pos1.getZ(),pos2.getZ());
-        return x >= minX && x <= maxX && z >= minZ && z <= maxZ && (ignoreHeight || (y >= minY && y <= maxY));
+        return (x - pos1.getX()) * (x - pos2.getX()) < 0 && (z - pos1.getZ()) * (z - pos2.getZ()) < 0
+                && (ignoreHeight || (y - pos1.getY()) * (y - pos2.getY()) < 0);
     }
+
 }

@@ -1,0 +1,6 @@
+Id: 'Explosion_Zombie'
+Name: 'ExplosionZombie'
+MaxHealth: 10
+Speed: 0.2
+Resistance: 0
+Damage: 3

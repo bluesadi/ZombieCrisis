@@ -1,6 +1,6 @@
 package cn.bluesadi.zombiecrisis.api;
 
-import cn.bluesadi.zombiecrisis.world.GameRegion;
+import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
 /**
@@ -17,8 +17,8 @@ public interface MobModel {
     String getID();
 
     /**
-     * 在游戏区域内随机生成一个怪物
+     * 在指定地点生成一个怪物
      * */
-    LivingEntity spawn(GameRegion region);
+    LivingEntity spawn(Location loc);
 
 }

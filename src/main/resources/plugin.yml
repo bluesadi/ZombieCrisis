@@ -2,3 +2,5 @@ name: ZombieCrisis
 version: ${project.version}
 main: cn.bluesadi.zombiecrisis.ZombieCrisis
 authors: [bluesadi]
+softdepend:
+  - Multiverse-Core

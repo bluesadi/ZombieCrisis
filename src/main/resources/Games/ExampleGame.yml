@@ -1,0 +1,7 @@
+Id: 'example_game'
+Name: 'My Example Game'
+GameWorld: 'mainworld'
+MobSpawner:
+  Enable: true
+  MaxMobsPerChunk: 8
+  Period: 10

@@ -1,6 +1,7 @@
 package cn.bluesadi.zombiecrisis.api;
 
-import cn.bluesadi.zombiecrisis.world.MobSpawner;
+import cn.bluesadi.zombiecrisis.config.MobData;
+import cn.bluesadi.zombiecrisis.game.MobSpawner;
 
 public class ZombieCrisisAPI {
 
@@ -11,6 +12,14 @@ public class ZombieCrisisAPI {
      * */
     public static void registerMob(MobModel model){
         MobSpawner.registerMob(model);
+    }
+
+    /**
+     * 获取某个怪物的配置信息
+     * @param id 怪物的id
+     * */
+    public static MobData getMobData(String id){
+        return MobData.getMobData(id);
     }
 
 }

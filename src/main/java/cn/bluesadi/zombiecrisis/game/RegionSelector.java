@@ -1,4 +1,4 @@
-package cn.bluesadi.zombiecrisis.world;
+package cn.bluesadi.zombiecrisis.game;
 
 import com.google.common.collect.Maps;
 import org.bukkit.Location;
