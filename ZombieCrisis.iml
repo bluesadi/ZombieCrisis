@@ -33,5 +33,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Maven: public:paperspigot:1.12.2" level="project" />
+    <orderEntry type="library" name="Maven: cn.bluesadi:commonlib:0.1.7-SNAPSHOTS" level="project" />
   </component>
 </module>

@@ -6,7 +6,7 @@
 
     <groupId>cn.bluesadi</groupId>
     <artifactId>zombiecrisis</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.4</version>
     <packaging>jar</packaging>
 
     <name>ZombieCrisis</name>
@@ -70,6 +70,12 @@
             <artifactId>paperspigot</artifactId>
             <version>1.12.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.bluesadi</groupId>
+            <artifactId>commonlib</artifactId>
+            <version>0.1.7-SNAPSHOTS</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
