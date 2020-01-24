@@ -1,0 +1,6 @@
+Id: 'Super_Creeper'
+Name: 'Super_Creeper'
+MaxHealth: 20
+Speed: 0.2
+Resistance: 0
+Damage: 3

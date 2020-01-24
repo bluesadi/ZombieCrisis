@@ -1,0 +1,6 @@
+Id: 'Normal_Vex'
+Name: 'Vex'
+MaxHealth: 10
+Speed: 0.2
+Resistance: 0
+Damage: 4

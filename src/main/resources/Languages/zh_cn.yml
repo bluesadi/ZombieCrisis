@@ -1,3 +1,0 @@
-permission_denied: '&8[&6ZombieCrisis&8]&c你没有权限执行这个指令!需要权限:&e%s'
-agruments_wrong: '&8[&6ZombieCrisis&8]&c你输入的指令参数数量有误!需要至少 &e%s &c个参数'
-reload_success: '&8[&6ZombieCrisis&8]&a重载插件成功!'

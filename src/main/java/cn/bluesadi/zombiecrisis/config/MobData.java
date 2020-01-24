@@ -2,6 +2,7 @@ package cn.bluesadi.zombiecrisis.config;
 
 import cn.bluesadi.commonlib.io.YamlData;
 import cn.bluesadi.commonlib.logging.Logger;
+import cn.bluesadi.zombiecrisis.ZombieCrisis;
 import com.google.common.collect.Maps;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -11,9 +12,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Map;
 import java.util.Random;
-
 import static cn.bluesadi.commonlib.io.FileUtil.*;
-import static cn.bluesadi.zombiecrisis.ZombieCrisis.ID;
 
 public class MobData {
 
@@ -28,7 +27,7 @@ public class MobData {
     private double resistance;
     private int weight;
 
-    public MobData(String id){
+    private MobData(String id){
         this.id = id;
     }
 
@@ -37,9 +36,9 @@ public class MobData {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
 
                 @Override
-                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs){
                     YamlData data = loadConfig(path);
-                    MobData mob = new MobData(data.getString("Id","Unknown"));
+                    MobData mob = new MobData(data.getString("Id",null));
                     mob.customName = data.getString("Name");
                     mob.maxHealth = data.getDouble("MaxHealth",10);
                     mob.speed = data.getDouble("Speed",0.2);
@@ -47,13 +46,17 @@ public class MobData {
                     mob.resistance = data.getDouble("Resistance",0);
                     mob.weight = data.getInt("Weight",1);
                     totalWeight += mob.weight;
-                    mobDataMap.put(mob.id,mob);
+                    if(mob.id != null) {
+                        mobDataMap.put(mob.id, mob);
+                    }else{
+                        Logger.warn(ZombieCrisis.getInstance().getPluginLanguage().getMessage("mob_load_failed",path.getFileName()));
+                    }
                     return FileVisitResult.CONTINUE;
                 }
 
             });
         }catch (IOException e){
-            Logger.error(ID,"加载怪物失败!",e);
+            Logger.warn(ZombieCrisis.getInstance().getPluginLanguage().getMessage("mob_load_failed",path.getFileName()));
         }
         return mobDataMap.size();
     }

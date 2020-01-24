@@ -1,0 +1,7 @@
+Id: 'Super_Blaze'
+Name: 'SuperBlaze'
+MaxHealth: 40
+Speed: 0.3
+Resistance: 0
+Damage: 8
+Weight: 0.5

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Map;
 import java.util.Random;
@@ -21,7 +22,6 @@ public class MobSpawner {
     private GameWorld world;
     private int maxMobsPerChunk;
     private int period;
-
 
     public static void registerMob(MobModel model){
         registeredMobs.put(model.getID(),model);
@@ -69,7 +69,7 @@ public class MobSpawner {
                 return newLoc2;
             }
         }
-        Logger.debug(ZombieCrisis.ID,String.format("警告>>无法生成怪物，因为无法找到合适的坐标，原坐标(%s,%s,%s)",loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()));
+        Logger.debug(ZombieCrisis.ID,String.format("无法生成怪物，因为无法找到合适的坐标，原坐标(%s,%s,%s)",loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()));
         return null;
     }
 
@@ -121,24 +121,25 @@ public class MobSpawner {
     }
 
     private void spawn(){
-        MobData data = MobData.random();
-        if(data != null) {
-            Logger.debug(ZombieCrisis.ID,data.getId());
-            MobModel model = registeredMobs.get(data.getId());
-            for (Chunk chunk : world.getWorld().getLoadedChunks()) {
-                if (hasPlayer(chunk)) {
-                    int mobAmount = getMobAmount(chunk);
-                    for (int i = 0; i < maxMobsPerChunk - mobAmount; i++) {
+        for (Chunk chunk : world.getWorld().getLoadedChunks()) {
+            if (hasPlayer(chunk)) {
+                int mobAmount = getMobAmount(chunk);
+                for (int i = 0; i < maxMobsPerChunk - mobAmount; i++) {
+                    MobData data = MobData.random();
+                    if(data != null) {
+                        Logger.debug(ZombieCrisis.ID,data.getId());
+                        MobModel model = registeredMobs.get(data.getId());
                         Location loc = randomLocation(chunk);
                         if(loc != null) {
                             model.spawn(loc);
+                            loc.getWorld().strikeLightningEffect(loc);
                             Logger.debug(ZombieCrisis.ID,String.format("产生了一个怪物(%s,%s,%s)", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
                         }
+                    }else{
+                        Logger.debug(ZombieCrisis.ID,"无法随机获取怪物!");
                     }
                 }
             }
-        }else{
-            Logger.debug(ZombieCrisis.ID,"无法生成怪物!");
         }
     }
 

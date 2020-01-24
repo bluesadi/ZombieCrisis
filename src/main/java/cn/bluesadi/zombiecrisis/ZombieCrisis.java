@@ -23,7 +23,7 @@ public final class ZombieCrisis extends BukkitPlugin {
         info("> 正在导出资源文件");
         saveResource("Games/ExampleGame.yml");
         saveResource("config.yml");
-        saveResource("Languages/zh_cn.yml");
+        saveResource("Language/zh_cn.yml");
         info("> 正在加载语言文件");
         getI18nManager().registerLanguage(Languages.SIMPLIFIED_CHINESE,"zh_cn.yml");
         info("> 正在加载怪物配置...");
@@ -46,4 +46,5 @@ public final class ZombieCrisis extends BukkitPlugin {
     public String getPluginId() {
         return ID;
     }
+
 }
