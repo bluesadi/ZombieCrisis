@@ -1,12 +1,15 @@
 package cn.bluesadi.zombiecrisis;
 
 import static cn.bluesadi.commonlib.logging.Logger.*;
-
 import cn.bluesadi.commonlib.CommonLib;
 import cn.bluesadi.commonlib.i18n.Languages;
+import cn.bluesadi.commonlib.io.FileUtil;
 import cn.bluesadi.commonlib.plugin.BukkitPlugin;
+import cn.bluesadi.zombiecrisis.command.PluginCommands;
 import cn.bluesadi.zombiecrisis.config.MobData;
 import cn.bluesadi.zombiecrisis.game.Game;
+import cn.bluesadi.zombiecrisis.listener.PlayerMoveListener;
+import cn.bluesadi.zombiecrisis.listener.ZoneSelectListener;
 
 public final class ZombieCrisis extends BukkitPlugin {
 
@@ -23,9 +26,15 @@ public final class ZombieCrisis extends BukkitPlugin {
         info("> 正在导出资源文件");
         saveResource("Games/ExampleGame.yml");
         saveResource("config.yml");
+        FileUtil.createDirectories(getPluginFolder().resolve("Mobs"));
         saveResource("Language/zh_cn.yml");
         info("> 正在加载语言文件");
         getI18nManager().registerLanguage(Languages.SIMPLIFIED_CHINESE,"zh_cn.yml");
+        info("> 正在注册插件指令");
+        registerCommand(new PluginCommands());
+        info("> 正在注册插件监听器");
+        registerListener(new PlayerMoveListener());
+        registerListener(new ZoneSelectListener());
         info("> 正在加载怪物配置...");
         info("- 导入了 §e" + MobData.loadMobs(getPluginFolder().resolve("Mobs")) + " §a个有效的怪物");
         info("> 正在加载游戏配置...");

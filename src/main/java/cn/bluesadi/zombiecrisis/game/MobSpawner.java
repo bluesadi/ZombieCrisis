@@ -22,6 +22,7 @@ public class MobSpawner {
     private GameWorld world;
     private int maxMobsPerChunk;
     private int period;
+    private boolean enable;
 
     public static void registerMob(MobModel model){
         registeredMobs.put(model.getID(),model);
@@ -36,7 +37,7 @@ public class MobSpawner {
 
             @Override
             public void run() {
-                spawn();
+                if(enable) spawn();
             }
 
         }.runTaskTimer(ZombieCrisis.getInstance(),period * 20L,period * 20L);
@@ -46,6 +47,22 @@ public class MobSpawner {
         if(maxMobsPerChunk >= 0) {
             this.maxMobsPerChunk = maxMobsPerChunk;
         }
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public int getMaxMobsPerChunk() {
+        return maxMobsPerChunk;
+    }
+
+    public int getPeriod() {
+        return period;
     }
 
     public void setPeriod(int period) {
@@ -131,7 +148,9 @@ public class MobSpawner {
                         MobModel model = registeredMobs.get(data.getId());
                         Location loc = randomLocation(chunk);
                         if(loc != null) {
-                            model.spawn(loc);
+                            LivingEntity entity = model.spawn(loc);
+                            entity.setCustomNameVisible(false);
+                            entity.setCustomName(data.getCustomName());
                             loc.getWorld().strikeLightningEffect(loc);
                             Logger.debug(ZombieCrisis.ID,String.format("产生了一个怪物(%s,%s,%s)", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
                         }

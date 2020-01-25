@@ -5,6 +5,8 @@ import cn.bluesadi.commonlib.plugin.CommandHandler;
 import cn.bluesadi.zombiecrisis.ZombieCrisis;
 import cn.bluesadi.zombiecrisis.config.MobData;
 import cn.bluesadi.zombiecrisis.game.Game;
+import cn.bluesadi.zombiecrisis.game.Zone;
+import cn.bluesadi.zombiecrisis.game.ZoneSelector;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,6 +14,8 @@ public class PluginCommands extends CommandHandler {
 
     private static final String PREFIX = "zombiecrisis.";
     private static final String RELOAD_PERMISSION = PREFIX + "reload";
+    private static final String CREATE_ZONE_PERMISSION = PREFIX + "zone.create";
+    private static final String REMOVE_ZONE_PERMISSION = PREFIX + "zone.remove";
 
     public PluginCommands(){
         super("zombie",ZombieCrisis.getInstance());
@@ -26,6 +30,37 @@ public class PluginCommands extends CommandHandler {
                 MobData.loadMobs(ZombieCrisis.getInstance().getPluginFolder().resolve("Mobs"));
                 Game.loadGames(ZombieCrisis.getInstance().getPluginFolder().resolve("Games"));
                 sendMessage(lang.getMessage("reload_success"));
+            }else if(args[0].equalsIgnoreCase("zone") && validate(null,2)){
+                if(args[1].equalsIgnoreCase("create") && validate(CREATE_ZONE_PERMISSION,4)){
+                    String game = args[2],zone = args[3];
+                    if(Game.existsGame(game)){
+                        Game gameObj = Game.getGame(game);
+                        Zone zoneObj = ZoneSelector.getSelector(player).newZone(zone);
+                        if(zoneObj != null) {
+                            if (gameObj.getGameWorld().createSafeZone(zoneObj)){
+                                sender.sendMessage(lang.getMessage("create_safezone_success",zone));
+                            }else{
+                                sendMessage(lang.getMessage("zone_exists",zone));
+                            }
+                        }else{
+                            sendMessage(lang.getMessage("create_zone_fail"));
+                        }
+                    }else{
+                        sendMessage(lang.getMessage("game_not_exists",zone));
+                    }
+                }else if(args[1].equalsIgnoreCase("remove") && validate(REMOVE_ZONE_PERMISSION,4)){
+                    String game = args[2],zone = args[3];
+                    if(Game.existsGame(game)){
+                        Game gameObj = Game.getGame(game);
+                        if (gameObj.getGameWorld().removeSafeZone(zone)){
+                            sender.sendMessage(lang.getMessage("remove_safezone_success",zone));
+                        }else{
+                            sendMessage(lang.getMessage("zone_not_exists",zone));
+                        }
+                    }else{
+                        sendMessage(lang.getMessage("game_not_exists",zone));
+                    }
+                }
             }
         }
     }
