@@ -10,7 +10,7 @@ public class Zone {
     private String name;
     private Location pos1;
     private Location pos2;
-    private boolean ignoreHeight;
+    private boolean infHeight;
 
     public Zone(String id,Location pos1, Location pos2){
         this.id = id;
@@ -25,7 +25,7 @@ public class Zone {
                 pos1Sub.getInteger("y"),pos1Sub.getInteger("z"));
         this.pos2 = new Location(Bukkit.getWorld(pos2Sub.getString("world")),pos2Sub.getInteger("x"),
                 pos2Sub.getInteger("y"),pos2Sub.getInteger("z"));
-        this.ignoreHeight = jsonObject.getBoolean("ignoreHeight");
+        this.infHeight = jsonObject.getBoolean("infHeight");
         this.id = jsonObject.getString("id");
         this.name = jsonObject.getString("name");
     }
@@ -42,14 +42,18 @@ public class Zone {
         pos2Sub.put("z",pos2.getBlockZ());
         jsonObject.put("pos1",pos1Sub);
         jsonObject.put("pos2",pos2Sub);
-        jsonObject.put("ignoreHeight",ignoreHeight);
+        jsonObject.put("infHeight",infHeight);
         jsonObject.put("id",id);
         jsonObject.put("name",name);
         return jsonObject.toString();
     }
 
-    public void setIgnoreHeight(boolean ignoreHeight) {
-        this.ignoreHeight = ignoreHeight;
+    public void setInfHeight(boolean ignoreHeight) {
+        this.infHeight = ignoreHeight;
+    }
+
+    public boolean isInfHeight() {
+        return infHeight;
     }
 
     public boolean inZone(Location loc){
@@ -57,7 +61,7 @@ public class Zone {
         double y = loc.getY();
         double z = loc.getZ();
         return (x - pos1.getBlockX()) * (x - pos2.getBlockX()) <= 0 && (z - pos1.getBlockZ()) * (z - pos2.getBlockZ()) <= 0
-                && (ignoreHeight || (y - pos1.getBlockY()) * (y - pos2.getBlockY()) <= 0);
+                && (infHeight || (y - pos1.getBlockY()) * (y - pos2.getBlockY()) <= 0);
     }
 
     public Location getPos1() {

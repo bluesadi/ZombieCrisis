@@ -16,6 +16,7 @@ public class PluginCommands extends CommandHandler {
     private static final String RELOAD_PERMISSION = PREFIX + "reload";
     private static final String CREATE_ZONE_PERMISSION = PREFIX + "zone.create";
     private static final String REMOVE_ZONE_PERMISSION = PREFIX + "zone.remove";
+    private static final String IGNORE_H_ZONE_PERMISSION = PREFIX + "zone.infh";
 
     public PluginCommands(){
         super("zombie",ZombieCrisis.getInstance());
@@ -38,7 +39,7 @@ public class PluginCommands extends CommandHandler {
                         Zone zoneObj = ZoneSelector.getSelector(player).newZone(zone);
                         if(zoneObj != null) {
                             if (gameObj.getGameWorld().createSafeZone(zoneObj)){
-                                sender.sendMessage(lang.getMessage("create_safezone_success",zone));
+                                sender.sendMessage(lang.getMessage("create_safe_zone_success",zone));
                             }else{
                                 sendMessage(lang.getMessage("zone_exists",zone));
                             }
@@ -46,19 +47,34 @@ public class PluginCommands extends CommandHandler {
                             sendMessage(lang.getMessage("create_zone_fail"));
                         }
                     }else{
-                        sendMessage(lang.getMessage("game_not_exists",zone));
+                        sendMessage(lang.getMessage("game_not_exists",game));
                     }
                 }else if(args[1].equalsIgnoreCase("remove") && validate(REMOVE_ZONE_PERMISSION,4)){
                     String game = args[2],zone = args[3];
                     if(Game.existsGame(game)){
                         Game gameObj = Game.getGame(game);
                         if (gameObj.getGameWorld().removeSafeZone(zone)){
-                            sender.sendMessage(lang.getMessage("remove_safezone_success",zone));
+                            sender.sendMessage(lang.getMessage("remove_safe_zone_success",zone));
                         }else{
                             sendMessage(lang.getMessage("zone_not_exists",zone));
                         }
                     }else{
-                        sendMessage(lang.getMessage("game_not_exists",zone));
+                        sendMessage(lang.getMessage("game_not_exists",game));
+                    }
+                }else if(args[1].equalsIgnoreCase("infh") && validate(IGNORE_H_ZONE_PERMISSION,4)){
+                    String game = args[2],zone = args[3];
+                    if(Game.existsGame(game)){
+                        Game gameObj = Game.getGame(game);
+                        Zone zoneObj = gameObj.getGameWorld().getSafeZone(zone);
+                        if (zoneObj != null){
+                            zoneObj.setInfHeight(!zoneObj.isInfHeight());
+                            sender.sendMessage(zoneObj.isInfHeight() ? lang.getMessage("set_inf_height_success",zone)
+                                    : lang.getMessage("set_fin_height_success",zone));
+                        }else{
+                            sendMessage(lang.getMessage("zone_not_exists",zone));
+                        }
+                    }else{
+                        sendMessage(lang.getMessage("game_not_exists",game));
                     }
                 }
             }

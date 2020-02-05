@@ -1,16 +1,16 @@
 package cn.bluesadi.zombiecrisis.game;
 
+import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-
 import java.util.Collection;
 import java.util.Map;
 
 public class GameWorld {
 
     private World world;
-    private Map<String,Zone> safeZones;
+    private Map<String,Zone> safeZones = Maps.newHashMap();
 
     public GameWorld(String world){
         this.world = Bukkit.getWorld(world);
@@ -53,6 +53,13 @@ public class GameWorld {
     public Zone getSafeZone(Location loc){
         for(Zone zone : safeZones.values()){
             if(zone.inZone(loc)) return zone;
+        }
+        return null;
+    }
+
+    public Zone getSafeZone(String name){
+        for(Zone zone : safeZones.values()){
+            if(zone.getName().equals(name)) return zone;
         }
         return null;
     }

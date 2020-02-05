@@ -147,6 +147,11 @@ public class MobSpawner {
                         Logger.debug(ZombieCrisis.ID,data.getId());
                         MobModel model = registeredMobs.get(data.getId());
                         Location loc = randomLocation(chunk);
+                        for(int j = 0;j <= 10;j ++){
+                            if(world.inSafeZone(loc)) loc = randomLocation(chunk);
+                            else break;
+                            if(j == 10) return;
+                        }
                         if(loc != null) {
                             LivingEntity entity = model.spawn(loc);
                             entity.setCustomNameVisible(false);

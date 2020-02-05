@@ -2,5 +2,9 @@ name: ZombieCrisis
 version: ${project.version}
 main: cn.bluesadi.zombiecrisis.ZombieCrisis
 authors: [bluesadi]
+depend:
+  - ProtocolLib
 softdepend:
   - Multiverse-Core
+commands:
+  zombie:

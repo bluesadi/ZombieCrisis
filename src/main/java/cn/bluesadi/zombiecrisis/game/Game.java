@@ -49,7 +49,7 @@ public class Game {
                         game.getGameWorld().addSafeZone(new Zone(JSON.parseObject(str)));
                     }
                     if(game.id != null && game.gameWorld.getWorld() != null) {
-                        gameMap.put(game.name, game);
+                        gameMap.put(game.id, game);
                         game.path = path;
                         game.mobSpawner.setEnable(data.getBoolean("MobSpawner.Enable",true));
                         game.mobSpawner.enable();
@@ -64,6 +64,10 @@ public class Game {
             Logger.warn(ZombieCrisis.getInstance().getPluginLanguage().getMessage("game_load_failed",path.getFileName()));
         }
         return gameMap.size();
+    }
+
+    public static void saveGames(){
+        gameMap.values().forEach(Game::saveData);
     }
 
     public static Zone getSafeZone(Location loc){

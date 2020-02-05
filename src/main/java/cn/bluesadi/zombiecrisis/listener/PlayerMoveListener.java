@@ -1,6 +1,8 @@
 package cn.bluesadi.zombiecrisis.listener;
 
+import cn.bluesadi.commonlib.CommonLib;
 import cn.bluesadi.commonlib.i18n.Language;
+import cn.bluesadi.commonlib.logging.Logger;
 import cn.bluesadi.zombiecrisis.ZombieCrisis;
 import cn.bluesadi.zombiecrisis.game.Game;
 import cn.bluesadi.zombiecrisis.game.Zone;
@@ -18,10 +20,14 @@ public class PlayerMoveListener implements Listener {
         Player player = event.getPlayer();
         Location to = event.getTo(),from = event.getFrom();
         Zone fromZone = Game.getSafeZone(from),toZone = Game.getSafeZone(to);
-        if(fromZone != null && toZone == null){
-            player.sendActionBar(lang.getMessage("leave_safezone"));
-        }else if(fromZone == null && toZone != null){
-            player.sendActionBar(lang.getMessage("enter_safezone"));
+        try {
+            if (fromZone != null && toZone == null) {
+                CommonLib.sendActionBar(player, lang.getMessage("leave_safe_zone"));
+            } else if (fromZone == null && toZone != null) {
+                CommonLib.sendActionBar(player, lang.getMessage("enter_safe_zone"));
+            }
+        }catch (Exception e){
+            Logger.error(ZombieCrisis.ID,e);
         }
     }
 }
