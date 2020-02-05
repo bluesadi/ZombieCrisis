@@ -1,6 +1,6 @@
 Id: 'example_game'
 Name: 'My Example Game'
-GameWorld: 'mainworld'
+GameWorld: 'world'
 MobSpawner:
   Enable: true
   MaxMobsPerChunk: 8
