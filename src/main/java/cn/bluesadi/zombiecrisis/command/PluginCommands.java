@@ -14,6 +14,7 @@ public class PluginCommands extends CommandHandler {
 
     private static final String PREFIX = "zombiecrisis.";
     private static final String RELOAD_PERMISSION = PREFIX + "reload";
+    private static final String SAVE_PERMISSION = PREFIX + "save";
     private static final String CREATE_ZONE_PERMISSION = PREFIX + "zone.create";
     private static final String REMOVE_ZONE_PERMISSION = PREFIX + "zone.remove";
     private static final String IGNORE_H_ZONE_PERMISSION = PREFIX + "zone.infh";
@@ -31,6 +32,10 @@ public class PluginCommands extends CommandHandler {
                 MobData.loadMobs(ZombieCrisis.getInstance().getPluginFolder().resolve("Mobs"));
                 Game.loadGames(ZombieCrisis.getInstance().getPluginFolder().resolve("Games"));
                 sendMessage(lang.getMessage("reload_success"));
+            }else if(args[0].equalsIgnoreCase("save") && validate(SAVE_PERMISSION,1)){
+                Game.saveGames();
+                ZombieCrisis.getInstance().saveDefaultResource();
+                sendMessage(lang.getMessage("save_success"));
             }else if(args[0].equalsIgnoreCase("zone") && validate(null,2)){
                 if(args[1].equalsIgnoreCase("create") && validate(CREATE_ZONE_PERMISSION,4)){
                     String game = args[2],zone = args[3];

@@ -16,6 +16,16 @@ public final class ZombieCrisis extends BukkitPlugin {
     public static final String ID = "ZOMBIE_CRISIS";
     private static ZombieCrisis instance;
 
+    public void saveDefaultResource() {
+        FileUtil.mkdirs(getPluginFolder().resolve("Games"));
+        if(FileUtil.isEmpty(getPluginFolder().resolve("Games"))) {
+            saveResource("Games/ExampleGame.yml");
+        }
+        saveResource("config.yml");
+        FileUtil.mkdirs(getPluginFolder().resolve("Mobs"));
+        saveResource("Language/zh_cn.yml");
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -24,13 +34,7 @@ public final class ZombieCrisis extends BukkitPlugin {
         setDebugMode(true);
         CommonLib.init(this);
         info("> 正在导出资源文件");
-        FileUtil.mkdirs(getPluginFolder().resolve("Games"));
-        if(FileUtil.isEmpty(getPluginFolder().resolve("Games"))) {
-            saveResource("Games/ExampleGame.yml");
-        }
-        saveResource("config.yml");
-        FileUtil.mkdirs(getPluginFolder().resolve("Mobs"));
-        saveResource("Language/zh_cn.yml");
+        saveDefaultResource();
         info("> 正在加载语言文件");
         getI18nManager().registerLanguage(Languages.SIMPLIFIED_CHINESE,"zh_cn.yml");
         info("> 正在注册插件指令");

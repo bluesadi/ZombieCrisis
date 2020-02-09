@@ -4,7 +4,11 @@ import cn.bluesadi.commonlib.logging.Logger;
 import cn.bluesadi.zombiecrisis.ZombieCrisis;
 import cn.bluesadi.zombiecrisis.api.MobModel;
 import cn.bluesadi.zombiecrisis.config.MobData;
+import cn.bluesadi.zombiecrisis.util.DayNightCircle;
+import cn.bluesadi.zombiecrisis.util.RandomUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -12,6 +16,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -141,28 +148,51 @@ public class MobSpawner {
         for (Chunk chunk : world.getWorld().getLoadedChunks()) {
             if (hasPlayer(chunk)) {
                 int mobAmount = getMobAmount(chunk);
-                for (int i = 0; i < maxMobsPerChunk - mobAmount; i++) {
+                double scale = DayNightCircle.getTime(world.getWorld().getTime()).getScale();
+                for (int i = 0; i < maxMobsPerChunk * scale - mobAmount; i++) {
                     MobData data = MobData.random();
-                    if(data != null) {
-                        Logger.debug(ZombieCrisis.ID,data.getId());
-                        MobModel model = registeredMobs.get(data.getId());
-                        Location loc = randomLocation(chunk);
-                        for(int j = 0;j <= 10;j ++){
-                            if(world.inSafeZone(loc)) loc = randomLocation(chunk);
-                            else break;
-                            if(j == 10) return;
-                        }
-                        if(loc != null) {
-                            LivingEntity entity = model.spawn(loc);
-                            entity.setCustomNameVisible(false);
-                            entity.setCustomName(data.getCustomName());
-                            loc.getWorld().strikeLightningEffect(loc);
-                            Logger.debug(ZombieCrisis.ID,String.format("产生了一个怪物(%s,%s,%s)", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
-                        }
-                    }else{
-                        Logger.debug(ZombieCrisis.ID,"无法随机获取怪物!");
+                    Logger.debug(ZombieCrisis.ID,data.getId());
+                    MobModel model = registeredMobs.get(data.getId());
+                    Location loc = randomLocation(chunk);
+                    for(int j = 0;j <= 10;j ++){
+                        if(world.inSafeZone(loc)) loc = randomLocation(chunk);
+                        else break;
+                        if(j == 10) return;
+                    }
+                    if(loc != null) {
+                        LivingEntity entity = model.spawn(loc);
+                        entity.setCustomNameVisible(false);
+                        entity.setCustomName(data.getCustomName());
+                        loc.getWorld().strikeLightningEffect(loc);
+                        Logger.debug(ZombieCrisis.ID,String.format("产生了一个怪物(%s,%s,%s)", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
                     }
                 }
+            }
+        }
+        if(RandomUtil.coin(0.05)) zombieComing();
+    }
+
+    private void zombieComing(){
+        List<Player> players = Lists.newArrayList();
+        for(Player player : Bukkit.getOnlinePlayers()){
+            if(world.getWorld().equals(player.getWorld()) && !world.inSafeZone(player.getLocation())) players.add(player);
+        }
+        if(players.isEmpty()) return;
+        Player luckyPlayer = players.get(RANDOM.nextInt(players.size()));
+        for (int i = 0; i < maxMobsPerChunk * DayNightCircle.MID_NIGHT.getScale() * 2; i++) {
+            MobData data = MobData.random();
+            MobModel model = registeredMobs.get(data.getId());
+            Location loc = luckyPlayer.getLocation();
+            for(int j = 0;j <= 10;j ++){
+                if(world.inSafeZone(loc)) loc = randomLocation(luckyPlayer.getChunk());
+                else break;
+                if(j == 10) return;
+            }
+            if(loc != null) {
+                LivingEntity entity = model.spawn(loc);
+                entity.setCustomNameVisible(false);
+                entity.setCustomName(data.getCustomName());
+                loc.getWorld().strikeLightningEffect(loc);
             }
         }
     }

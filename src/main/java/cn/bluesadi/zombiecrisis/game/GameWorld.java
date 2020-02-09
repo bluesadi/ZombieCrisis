@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -62,5 +64,11 @@ public class GameWorld {
             if(zone.getName().equals(name)) return zone;
         }
         return null;
+    }
+
+    public void broadcast(String msg,Object... arg){
+        for(Player player : Bukkit.getOnlinePlayers()){
+            if(player.getWorld().equals(world))player.sendMessage(String.format(msg,arg));
+        }
     }
 }

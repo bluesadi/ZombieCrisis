@@ -18,14 +18,14 @@ public class MobData {
 
     private static Map<String, MobData> mobDataMap = Maps.newHashMap();
     private static final Random random = new Random();
-    private static int totalWeight;
+    private static double totalWeight;
     private String id;
     private String customName;
     private double maxHealth;
     private double speed;
     private double damage;
     private double resistance;
-    private int weight;
+    private double weight;
 
     private MobData(String id){
         this.id = id;
@@ -44,7 +44,7 @@ public class MobData {
                     mob.speed = data.getDouble("Speed",0.2);
                     mob.damage = data.getDouble("Damage",3);
                     mob.resistance = data.getDouble("Resistance",0);
-                    mob.weight = data.getInt("Weight",1);
+                    mob.weight = data.getDouble("Weight",1.0);
                     totalWeight += mob.weight;
                     if(mob.id != null) {
                         mobDataMap.put(mob.id, mob);
@@ -63,14 +63,15 @@ public class MobData {
 
     public static MobData random(){
         double r = totalWeight * random.nextDouble();
-        int cur = 0;
+        double cur = 0;
         for(MobData data : mobDataMap.values()){
             cur += data.getWeight();
             if(cur >= r){
                 return data;
             }
         }
-        return null;
+        Logger.debug(ZombieCrisis.ID,"无法随机获取怪物!");
+        return mobDataMap.values().iterator().next();
     }
 
     public static MobData getMobData(String id){
@@ -97,7 +98,7 @@ public class MobData {
         return resistance;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 

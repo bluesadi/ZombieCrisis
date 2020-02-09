@@ -1,4 +1,4 @@
-Id: 'example_game'
+ID: 'example_game'
 Name: 'My Example Game'
 GameWorld: 'world'
 MobSpawner:

@@ -1,6 +1,7 @@
 permission_denied: '&8[&6ZombieCrisis&8]&c你没有权限执行这个指令!需要权限:&e%s'
 agruments_wrong: '&8[&6ZombieCrisis&8]&c你输入的指令参数数量有误!需要至少 &e%s &c个参数'
 reload_success: '&8[&6ZombieCrisis&8]&a重载插件成功!'
+save_success: '&8[&6ZombieCrisis&8]&a保存插件数据成功!'
 game_load_failed: '&8[&6ZombieCrisis&8]&c游戏配置文件 &e%s &c加载失败！'
 mob_load_failed: '&8[&6ZombieCrisis&8]&c怪物配置文件 &e%s &c加载失败！'
 game_exists: '&8[&6ZombieCrisis&8]&c游戏 &e%s &c已经存在了！'

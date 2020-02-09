@@ -38,7 +38,7 @@ public class Game {
                 @Override
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
                     YamlData data = loadConfig(path);
-                    Game game = new Game(data.getString("Id",null));
+                    Game game = new Game(data.getString("ID",null));
                     game.name = data.getString("Name",game.id);
                     game.gameWorld = new GameWorld(data.getString("GameWorld"));
                     game.mobSpawner = new MobSpawner(game.gameWorld);
